@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WA_Pharmacy.DTOs.Medicine.MedicineListDto>
+
+@{
+    ViewData["Title"] = "لیست داروها";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-pills ml-1"></i> لیست داروها
+                </h3>
+                <div class="card-tools">
+                    <a asp-action="Create" class="btn btn-success btn-sm">
+                        <i class="fa fa-plus ml-1"></i> ثبت داروی جدید
+                    </a>
+                </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-bordered table-striped text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.MedicineName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
+                            <th>@Html.DisplayNameFor(model => model.Stock)</th>
+                            <th>@Html.DisplayNameFor(model => model.IsInsurance)</th>
+                            <th style="width: 150px;">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.MedicineName)</td>
+                                <td>@item.Price.ToString("N0") <small class="text-muted">ریال</small></td>
+                                <td>
+                                    @if (item.Stock == 0)
+                                    {
+                                        <span class="badge badge-danger">ناموجود</span>
+                                    }
+                                    else if (item.Stock < 10)
+                                    {
+                                        <span class="badge badge-warning">@item.Stock عدد (کم)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-success">@item.Stock عدد</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.IsInsurance == "بله")
+                                    {
+                                        <i class="fa fa-check-circle text-success"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-times-circle text-danger"></i>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm" title="جزئیات">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" title="ویرایش">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="حذف">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

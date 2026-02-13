@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>داروخانه | @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/admin-theme/dist/css/persian-datepicker.min.css">
+
+    <link rel="stylesheet" href="~/admin-theme/plugins/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="~/admin-theme/dist/css/adminlte.css">
+
+    <link rel="stylesheet" href="~/admin-theme/dist/css/bootstrap-rtl.min.css">
+
+    <link rel="stylesheet" href="~/admin-theme/dist/css/custom-style.css">
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/" class="nav-link">خانه</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                <partial name="_LoginPartial" />
+            </ul>
+        </nav>
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="/" class="brand-link">
+                <img src="~/admin-theme/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">سیستم داروخانه</span>
+            </a>
+
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/admin-theme/dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">محمد جان</a>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-dashboard"></i>
+                                <p>داشبورد</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-controller="Customers" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i>
+                                <p>مشتریان</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Medicines" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-medkit"></i>
+                                <p>داروها</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Doctors" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-user-md"></i>
+                                <p>پزشکان</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Insurances" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-building"></i>
+                                <p>شرکت‌های بیمه</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">@ViewData["Title"]</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+
+        <footer class="main-footer">
+            <strong>کپی‌رایت &copy; 2026 <a href="#">داروخانه من</a>.</strong>
+        </footer>
+    </div>
+
+    <script src="~/admin-theme/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin-theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin-theme/dist/js/adminlte.js"></script>
+    <script src="~/admin-theme/dist/js/persian-date.min.js"></script>
+    <script src="~/admin-theme/dist/js/persian-datepicker.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

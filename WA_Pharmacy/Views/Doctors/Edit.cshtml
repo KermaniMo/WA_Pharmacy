@@ -1,0 +1,142 @@
+@model WA_Pharmacy.DTOs.Doctor.DoctorEditDto
+
+@{
+    ViewData["Title"] = "ویرایش پزشک";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-warning card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-edit ml-1"></i>
+                    ویرایش اطلاعات پزشک
+                </h3>
+            </div>
+
+            <form asp-action="Edit">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="display:none;"></div>
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DoctorNumber"></label>
+                                <input asp-for="DoctorNumber" class="form-control" readonly />
+                                <span asp-validation-for="DoctorNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="NationalCode"></label>
+                                <input asp-for="NationalCode" class="form-control" />
+                                <span asp-validation-for="NationalCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Name"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="LastName"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Specialization"></label>
+                                <input asp-for="Specialization" class="form-control" />
+                                <span asp-validation-for="Specialization" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MobileNumber"></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                    </div>
+                                    <input asp-for="MobileNumber" class="form-control" />
+                                </div>
+                                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Birthday"></label>
+                                <input asp-for="Birthday" class="form-control pdate" placeholder="مثلا: 1400/01/01" autocomplete="off" readonly />
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Sex" class="d-block"></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" asp-for="Sex" value="true" id="sexMale">
+                                    <label class="form-check-label" for="sexMale">مرد</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" asp-for="Sex" value="false" id="sexFemale">
+                                    <label class="form-check-label" for="sexFemale">زن</label>
+                                </div>
+                                <span asp-validation-for="Sex" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="UserId"></label>
+                                <select asp-for="UserId" class="form-control" asp-items="@(ViewData["UserId"] as SelectList)">
+                                    <option value="">انتخاب کاربر</option>
+                                </select>
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <button type="submit" class="btn btn-warning px-5">
+                        <i class="fa fa-save ml-1"></i> ذخیره تغییرات
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary float-left">
+                        <i class="fa fa-arrow-left ml-1"></i> بازگشت
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            $(document).ready(function () {
+                $('.pdate').persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    initialValue: false,
+                    autoClose: true,
+                    calendar: {
+                        persian: {
+                            locale: 'fa'
+                        }
+                    }
+                });
+            });
+        </script>
+    }
+}

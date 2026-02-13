@@ -1,0 +1,72 @@
+﻿@model WA_Pharmacy.DTOs.Medicine.MedicineEditDto
+
+@{
+    ViewData["Title"] = "ثبت داروی جدید";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-plus-circle ml-1"></i> فرم ثبت دارو
+                </h3>
+            </div>
+
+            <form asp-action="Create">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="MedicineName"></label>
+                        <input asp-for="MedicineName" class="form-control" placeholder="نام دارو را وارد کنید" />
+                        <span asp-validation-for="MedicineName" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Price"></label>
+                                <div class="input-group">
+                                    <input asp-for="Price" class="form-control" type="number" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">ریال</span>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Stock"></label>
+                                <input asp-for="Stock" class="form-control" type="number" />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" asp-for="IsInsurance" id="customCheckbox1">
+                            <label for="customCheckbox1" class="custom-control-label">@Html.DisplayNameFor(model => model.IsInsurance)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="fa fa-save ml-1"></i> ثبت اطلاعات
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary float-left">
+                        <i class="fa fa-arrow-left ml-1"></i> بازگشت
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

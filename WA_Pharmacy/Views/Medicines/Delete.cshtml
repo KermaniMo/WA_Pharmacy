@@ -1,0 +1,54 @@
+﻿@model WA_Pharmacy.DTOs.Medicine.MedicineEditDto
+
+@{
+    ViewData["Title"] = "حذف دارو";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fa fa-exclamation-triangle"></i> هشدار!</h5>
+            آیا مطمئن هستید که می‌خواهید داروی <strong>@Model.MedicineName</strong> را حذف کنید؟
+        </div>
+
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-trash ml-1"></i> حذف دارو
+                </h3>
+            </div>
+
+            <div class="card-body p-0">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th style="width: 40%">@Html.DisplayNameFor(model => model.MedicineName)</th>
+                            <td>@Html.DisplayFor(model => model.MedicineName)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
+                            <td>@Model.Price.ToString("N0") ریال</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Stock)</th>
+                            <td>@Model.Stock عدد</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger float-right px-4">
+                        <i class="fa fa-trash ml-1"></i> بله، حذف کن
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary float-left">
+                        <i class="fa fa-arrow-left ml-1"></i> انصراف
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

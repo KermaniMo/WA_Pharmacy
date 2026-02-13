@@ -1,0 +1,87 @@
+@model WA_Pharmacy.DTOs.Doctor.DoctorListDto
+
+@{
+    ViewData["Title"] = "حذف پزشک";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fa fa-exclamation-triangle"></i> هشدار!</h5>
+            آیا مطمئن هستید که می‌خواهید اطلاعات پزشک <strong>@Model.FullName</strong> را حذف کنید؟
+            <br />
+            این عملیات غیرقابل بازگشت است.
+        </div>
+
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-user-times ml-1"></i>
+                    مشخصات پزشک
+                </h3>
+            </div>
+
+            <div class="card-body p-0">
+                <table class="table table-striped table-bordered">
+                    <tbody>
+                        <tr>
+                            <th style="width: 30%">@Html.DisplayNameFor(model => model.DoctorNumber)</th>
+                            <td>@Html.DisplayFor(model => model.DoctorNumber)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.NationalCode)</th>
+                            <td>@Html.DisplayFor(model => model.NationalCode)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                            <td class="font-weight-bold">@Html.DisplayFor(model => model.FullName)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Specialization)</th>
+                            <td>@Html.DisplayFor(model => model.Specialization)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.MobileNumber)</th>
+                            <td>@Html.DisplayFor(model => model.MobileNumber)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Sex)</th>
+                            <td>
+                                @if (Model.Sex == "مرد")
+                                {
+                                    <span class="badge badge-info">مرد</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">زن</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Birthday)</th>
+                            <td>@Html.DisplayFor(model => model.Birthday)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.RegisterDate)</th>
+                            <td>@Html.DisplayFor(model => model.RegisterDate)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+
+                    <button type="submit" class="btn btn-danger float-right px-4">
+                        <i class="fa fa-trash ml-1"></i> بله، حذف کن
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary float-left">
+                        <i class="fa fa-arrow-left ml-1"></i> انصراف
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
