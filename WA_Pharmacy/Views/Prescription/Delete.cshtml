@@ -1,0 +1,121 @@
+@model WA_Pharmacy.DTOs.Prescription.PrescriptionDto
+
+@{
+    ViewData["Title"] = "حذف نسخه";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-trash ml-2"></i>
+                    حذف نسخه - کد رهگیری: <span class="text-danger font-weight-bold">@Model.TrackingCode</span>
+                </h3>
+                <div class="card-tools">
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-arrow-left ml-1"></i> بازگشت به لیست
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="alert alert-warning mb-4">
+                    <i class="fa fa-exclamation-triangle ml-1"></i>
+                    <strong>توجه:</strong> آیا از حذف این نسخه اطمینان دارید؟
+                    با پاک کردن این نسخه، <strong>تعداد موجودی همه داروهای آن به انبار بازگردانده می‌شود</strong>.
+                    این عملیات غیر قابل بازگشت است!
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">اطلاعات بیمار</h5>
+                            <span class="description-text text-primary font-weight-bold">@Model.CustomerFullName</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">پزشک معالج</h5>
+                            <span class="description-text">@Model.DoctorName</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">شماره بیمه</h5>
+                            <span class="description-text text-info">@(string.IsNullOrEmpty(Model.InsuranceNumber) ? "آزاد (بدون بیمه)" : Model.InsuranceNumber)</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">مبلغ کل پرداختی</h5>
+                            <span class="description-text text-danger font-weight-bold" style="font-size: 1.2rem;">
+                                @Model.TotalPrice.ToString("N0") تومان
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4 mb-3 text-info border-bottom pb-2">
+                    <i class="fa fa-pills ml-1"></i> اقلام دارویی نسخه
+                </h4>
+                
+                @if (Model.MedicineList != null && Model.MedicineList.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">ردیف</th>
+                                    <th>نام دارو</th>
+                                    <th class="text-center">تعداد (بازگشت به انبار)</th>
+                                    <th>قیمت واحد (تومان)</th>
+                                    <th>جمع (تومان)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int counter = 1; }
+                                @foreach (var item in Model.MedicineList)
+                                {
+                                    <tr>
+                                        <td class="text-center">@(counter++)</td>
+                                        <td class="font-weight-bold">@item.MedicineName</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success px-2 py-1">+@item.Quantity</span>
+                                        </td>
+                                        <td>@item.OrginalPrice.ToString("N0")</td>
+                                        <td class="text-danger font-weight-bold">
+                                            @((item.OrginalPrice * item.Quantity).ToString("N0"))
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+            
+            <div class="card-footer text-left bg-light">
+                <form asp-action="Delete" method="post" id="deleteForm">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                        <i class="fa fa-trash ml-1"></i> تایید و حذف نهایی نسخه
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fa fa-times ml-1"></i> انصراف
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            if (confirm("آیا از حذف این نسخه و بازگشت موجودی داروها به انبار مطمئن هستید؟")) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+}

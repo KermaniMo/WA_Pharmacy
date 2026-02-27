@@ -83,6 +83,18 @@
                                 <p>شرکت‌های بیمه</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a asp-controller="Prescription" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-file-prescription"></i>
+                                <p>نسخه‌ها</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Insured" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fa fa-id-card"></i>
+                                <p>بیمه‌شدگان</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </nav>
@@ -117,6 +129,7 @@
     <script src="~/admin-theme/dist/js/adminlte.js"></script>
     <script src="~/admin-theme/dist/js/persian-date.min.js"></script>
     <script src="~/admin-theme/dist/js/persian-datepicker.min.js"></script>
+    <script src="~/js/custom-datepicker.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,275 @@
+@model WA_Pharmacy.DTOs.Prescription.PrescriptionEditDto
+
+@{
+    ViewData["Title"] = "ویرایش نسخه";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-warning card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-edit ml-2"></i> ویرایش نسخه - کد رهگیری: <span class="text-primary font-weight-bold">@Model.TrackingCode</span>
+                </h3>
+                <div class="card-tools">
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-arrow-left ml-1"></i> بازگشت به لیست
+                    </a>
+                </div>
+            </div>
+
+            <!-- /.card-header -->
+            <form asp-action="Edit" method="post" id="prescriptionForm">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="TrackingCode" />
+                <input type="hidden" asp-for="CustomerId" />
+                <input type="hidden" asp-for="DoctorId" />
+                <input type="hidden" asp-for="InsuredId" />
+
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <!-- اطلاعات هدر نسخه (فقط نمایشی) -->
+                    <div class="row mb-4">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header mb-2">بیمار</h5>
+                                <span class="description-text text-primary font-weight-bold">@Model.CustomerFullName</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header mb-2">پزشک معالج</h5>
+                                <span class="description-text">@Model.DoctorName</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="description-block">
+                                <h5 class="description-header mb-2">شماره بیمه</h5>
+                                <span class="description-text text-info">@(string.IsNullOrEmpty(Model.InsuranceNumber) ? "آزاد (بدون بیمه)" : Model.InsuranceNumber)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h5 class="text-info mb-3"><i class="fa fa-pills ml-1"></i> اقلام دارویی نسخه</h5>
+                    
+                    <div class="row mb-3 bg-light p-3 border rounded">
+                        <div class="col-md-5">
+                            <label class="control-label">انتخاب دارو</label>
+                            <select id="medicineSelect" class="form-control select2" asp-items="ViewBag.MedicinesList">
+                                <option value="">-- جستجو و انتخاب دارو --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">تعداد / مقدار</label>
+                            <input type="number" id="medicineQty" class="form-control" min="1" value="1" />
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" id="btnAddItem" class="btn btn-primary btn-block">
+                                <i class="fa fa-plus"></i> افزودن به لیست
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="itemsTable">
+                            <thead class="bg-warning text-white">
+                                <tr>
+                                    <th>نام دارو</th>
+                                    <th class="text-center" style="width: 150px;">تعداد</th>
+                                    <th class="text-center" style="width: 150px;">قیمت واحد</th>
+                                    <th class="text-center" style="width: 150px;">جمع کل پرداختی</th>
+                                    <th class="text-center" style="width: 100px;">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTbody">
+                                @* آیتم‌ها اینجا با جاوااسکریپت لود میشن *@
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-left font-weight-bold">مبلغ قابل پرداخت کل نسخه:</th>
+                                    <th colspan="2" class="text-center text-success font-weight-bold" style="font-size: 1.2rem;">
+                                        <span id="grandTotal">0</span> <small class="text-muted">تومان</small>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning" id="emptyItemsWarning">
+                        <i class="fa fa-exclamation-triangle ml-1"></i>
+                        هیچ دارویی اضافه نشده است. لطفاً حداقل یک دارو اضافه کنید.
+                    </div>
+                </div>
+
+                <div class="card-footer text-left">
+                    <button type="button" id="btnSubmitForm" class="btn btn-warning">
+                        <i class="fa fa-save ml-1"></i> ذخیره تغییرات
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fa fa-times ml-1"></i> انصراف
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // اطلاعات داروها رو از کنترلر به صورت JSON دریافت می‌کنیم
+        const medicinesData = @Html.Raw(ViewBag.MedicinesJson ?? "[]");
+        let items = [];
+
+        $(document).ready(function () {
+            // لود آیتم‌های موجود از مدل (برای حالت ویرایش)
+            @if (Model.Items != null && Model.Items.Any())
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <text>
+                    (function() {
+                        var med = medicinesData.find(m => m.Id == @item.MedicineId);
+                        if (med) {
+                            items.push({
+                                MedicineId: @item.MedicineId,
+                                MedicineName: med.MedicineName,
+                                Quantity: @item.Quantity,
+                                Price: med.Price,
+                                Stock: med.Stock + @item.Quantity // موجودی واقعی + مقدار فعلی (چون هنوز کسر نشده)
+                            });
+                        }
+                    })();
+                    </text>
+                }
+            }
+
+            // آپدیت اولیه لیست
+            updateTable();
+
+            $('#btnAddItem').click(function () {
+                var medicineId = $('#medicineSelect').val();
+                var quantity = parseInt($('#medicineQty').val());
+
+                if (!medicineId) {
+                    alert('لطفا یک دارو انتخاب کنید.');
+                    return;
+                }
+                
+                if (isNaN(quantity) || quantity <= 0) {
+                    alert('تعداد دارو باید بیشتر از صفر باشد.');
+                    return;
+                }
+
+                var selectedMed = medicinesData.find(m => m.Id == medicineId);
+                
+                var existingItemIndex = items.findIndex(i => i.MedicineId == medicineId);
+                var effectiveStock = selectedMed.Stock;
+
+                if (existingItemIndex > -1) {
+                    effectiveStock = items[existingItemIndex].Stock;
+                    var newQty = items[existingItemIndex].Quantity + quantity;
+                    if (effectiveStock < newQty) {
+                        alert('موجودی داروخانه کافی نیست! در لیست شما ' + items[existingItemIndex].Quantity + ' عدد وجود دارد.');
+                        return;
+                    }
+                    items[existingItemIndex].Quantity = newQty;
+                } else {
+                    if (selectedMed.Stock < quantity) {
+                        alert('موجودی کافی نیست! موجودی فعلی: ' + selectedMed.Stock);
+                        return;
+                    }
+                    items.push({
+                        MedicineId: medicineId,
+                        MedicineName: selectedMed.MedicineName,
+                        Quantity: quantity,
+                        Price: selectedMed.Price,
+                        Stock: selectedMed.Stock
+                    });
+                }
+
+                // ریست کردن فیلد ورودی
+                $('#medicineSelect').val('').trigger('change');
+                $('#medicineQty').val('1');
+
+                updateTable();
+            });
+
+            $('#btnSubmitForm').click(function () {
+                if (items.length === 0) {
+                    alert("لطفاً حداقل یک دارو به نسخه اضافه کنید.");
+                    return;
+                }
+                $('#prescriptionForm').submit();
+            });
+        });
+
+        function removeItem(index) {
+            items.splice(index, 1);
+            updateTable();
+        }
+
+        function changeQty(index, dir) {
+            var item = items[index];
+            var newQty = item.Quantity + dir;
+            if (newQty <= 0) return;
+            
+            if (newQty > item.Stock) {
+                alert('موجودی دارو کافی نیست! موجودی: ' + item.Stock);
+                return;
+            }
+            
+            items[index].Quantity = newQty;
+            updateTable();
+        }
+
+        function updateTable() {
+            var tbody = $('#itemsTbody');
+            tbody.empty();
+
+            if (items.length === 0) {
+                $('#emptyItemsWarning').show();
+                $('#itemsTable').hide();
+                $('#grandTotal').text('0');
+                return;
+            }
+
+            $('#emptyItemsWarning').hide();
+            $('#itemsTable').show();
+
+            var grandTotal = 0;
+
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var discount = 20;
+                var finalUnitCost = item.Price * ((100 - discount) / 100);
+                var totalItemCost = finalUnitCost * item.Quantity;
+                
+                grandTotal += totalItemCost;
+
+                var tr = $('<tr></tr>');
+                tr.append('<td class="align-middle">' + item.MedicineName + 
+                          '<input type="hidden" name="Items['+i+'].MedicineId" value="'+item.MedicineId+'" />' + 
+                          '<input type="hidden" name="Items['+i+'].Quantity" value="'+item.Quantity+'" />' + 
+                          '</td>');
+                
+                tr.append('<td class="text-center align-middle">' +
+                          '<div class="input-group input-group-sm">' +
+                          '<div class="input-group-prepend"><button type="button" class="btn btn-outline-secondary" onclick="changeQty('+i+', -1)"><i class="fa fa-minus"></i></button></div>' +
+                          '<input type="text" class="form-control text-center" readonly value="'+item.Quantity+'">' +
+                          '<div class="input-group-append"><button type="button" class="btn btn-outline-secondary" onclick="changeQty('+i+', 1)"><i class="fa fa-plus"></i></button></div>' +
+                          '</div></td>');
+
+                tr.append('<td class="text-center align-middle">' + finalUnitCost.toLocaleString() + '</td>');
+                tr.append('<td class="text-center align-middle font-weight-bold text-success">' + totalItemCost.toLocaleString() + '</td>');
+                
+                tr.append('<td class="text-center align-middle"><button type="button" class="btn btn-sm btn-danger" onclick="removeItem('+i+')"><i class="fa fa-trash"></i></button></td>');
+
+                tbody.append(tr);
+            }
+
+            $('#grandTotal').text(grandTotal.toLocaleString());
+        }
+    </script>
+}

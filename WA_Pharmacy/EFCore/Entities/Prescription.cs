@@ -15,6 +15,9 @@ namespace WA_Pharmacy.EFCore.Entities
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
+        public long? InsuredId { get; set; }
+        public Insured Insured { get; set; }
+
         // The list of medicines in this prescription
         public ICollection<PrescriptionDetail> MedicineList { get; set; }
 

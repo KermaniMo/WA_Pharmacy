@@ -13,7 +13,11 @@ namespace WA_Pharmacy.AppCode.Repository
 
         Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> expression);
         Task<TEntity> GetByIdAsync(TKey id);
+        Task<TEntity> GetByIdAsync(TKey id, params string[] includeProperties);
+        Task<TEntity> GetByIdAsync(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null);
         Task<List<TEntity>> GetAllAsync();
+        Task<List<TEntity>> GetAllAsync(params string[] includeProperties);
+        Task<List<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null);
         Task<List<TEntity>> GetSomeAsync(int count);
 
 

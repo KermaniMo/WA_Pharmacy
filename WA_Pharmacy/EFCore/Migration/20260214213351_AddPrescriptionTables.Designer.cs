@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WA_Pharmacy.EFCore.DbContextFolder;
 
 #nullable disable
 
-namespace WA_Pharmacy.Models.EFCore.Migration
+namespace WA_Pharmacy.EFCore.Migration
 {
     [DbContext(typeof(PharmacyContext))]
-    partial class PharmacyContextModelSnapshot : ModelSnapshot
+    [Migration("20260214213351_AddPrescriptionTables")]
+    partial class AddPrescriptionTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -424,9 +427,6 @@ namespace WA_Pharmacy.Models.EFCore.Migration
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("InsuredId")
-                        .HasColumnType("bigint");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -441,8 +441,6 @@ namespace WA_Pharmacy.Models.EFCore.Migration
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("DoctorId");
-
-                    b.HasIndex("InsuredId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -630,16 +628,9 @@ namespace WA_Pharmacy.Models.EFCore.Migration
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WA_Pharmacy.EFCore.Entities.Insured", "Insured")
-                        .WithMany()
-                        .HasForeignKey("InsuredId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Customer");
 
                     b.Navigation("Doctor");
-
-                    b.Navigation("Insured");
                 });
 
             modelBuilder.Entity("WA_Pharmacy.EFCore.Entities.PrescriptionDetail", b =>

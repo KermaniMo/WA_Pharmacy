@@ -23,6 +23,12 @@ namespace WA_Pharmacy.EFCore.Config
                 .WithMany(d => d.Prescriptions)
                 .HasForeignKey(p => p.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
+                
+            builder.HasOne(p => p.Insured)
+                .WithMany()
+                .HasForeignKey(p => p.InsuredId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

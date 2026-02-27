@@ -29,9 +29,63 @@ namespace WA_Pharmacy.AppCode.Repository
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<TEntity> GetByIdAsync(TKey id, params string[] includeProperties)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+        }
+
+        public async Task<TEntity> GetByIdAsync(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.FirstOrDefaultAsync(e => EF.Property<TKey>(e, "Id").Equals(id));
+        }
+
         public async Task<List<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(params string[] includeProperties)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<List<TEntity>> GetSomeAsync(int count)

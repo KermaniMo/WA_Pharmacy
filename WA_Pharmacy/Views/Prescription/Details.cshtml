@@ -1,0 +1,114 @@
+@model WA_Pharmacy.DTOs.Prescription.PrescriptionDto
+
+@{
+    ViewData["Title"] = "جزئیات نسخه";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-info-circle ml-2"></i>
+                    جزئیات نسخه - کد رهگیری: <span class="text-primary font-weight-bold">@Model.TrackingCode</span>
+                </h3>
+                <div class="card-tools">
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-arrow-left ml-1"></i> بازگشت به لیست
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">اطلاعات بیمار</h5>
+                            <span class="description-text text-primary font-weight-bold">@Model.CustomerFullName</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">پزشک معالج</h5>
+                            <span class="description-text">@Model.DoctorName</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">شماره بیمه</h5>
+                            <span class="description-text text-info">@(string.IsNullOrEmpty(Model.InsuranceNumber) ? "آزاد (بدون بیمه)" : Model.InsuranceNumber)</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="description-block">
+                            <h5 class="description-header mb-2">مبلغ کل قابل پرداخت</h5>
+                            <span class="description-text text-success font-weight-bold" style="font-size: 1.2rem;">
+                                @Model.TotalPrice.ToString("N0") تومان
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4 mb-3 text-info border-bottom pb-2">
+                    <i class="fa fa-pills ml-1"></i> اقلام دارویی نسخه
+                </h4>
+                
+                @if (Model.MedicineList != null && Model.MedicineList.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">ردیف</th>
+                                    <th>نام دارو</th>
+                                    <th class="text-center">تعداد</th>
+                                    <th>قیمت واحد (تومان)</th>
+                                    <th>سهم بیمه (تومان)</th>
+                                    <th>جمع (تومان)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int counter = 1; }
+                                @foreach (var item in Model.MedicineList)
+                                {
+                                    <tr>
+                                        <td class="text-center">@(counter++)</td>
+                                        <td class="font-weight-bold">@item.MedicineName</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary px-2 py-1">@item.Quantity</span>
+                                        </td>
+                                        <td>@item.OrginalPrice.ToString("N0")</td>
+                                        <td class="text-warning">@item.InsurancePrice.ToString("N0")</td>
+                                        <td class="text-success font-weight-bold">
+                                            @((item.OrginalPrice * item.Quantity).ToString("N0"))
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="bg-light">
+                                <tr>
+                                    <th colspan="5" class="text-left">جمع کل:</th>
+                                    <th class="text-success" style="font-size: 1.1rem;">@Model.TotalPrice.ToString("N0") <small>تومان</small></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle ml-1"></i>
+                        هیچ دارویی برای این نسخه ثبت نشده است!
+                    </div>
+                }
+            </div>
+            
+            <div class="card-footer text-left">
+                <!-- دکمه‌های عملیاتی مثل چاپ در آینده می‌توانند اینجا قرار بگیرند -->
+                <button type="button" class="btn btn-default" onclick="window.print();">
+                    <i class="fa fa-print ml-1"></i> چاپ نسخه
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
