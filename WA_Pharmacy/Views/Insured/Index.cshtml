@@ -1,0 +1,77 @@
+@model IEnumerable<WA_Pharmacy.DTOs.Insured.InsuredListDto>
+
+@{
+    ViewData["Title"] = "لیست بیمه‌شدگان";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-id-card ml-1"></i> مدیریت بیمه‌شدگان
+                </h3>
+                <div class="card-tools">
+                    <a asp-action="Create" class="btn btn-success btn-sm">
+                        <i class="fa fa-plus ml-1"></i> ثبت بیمه‌شده جدید
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.InsuranceNumber)</th>
+                            <th>@Html.DisplayNameFor(model => model.CustomerFullName)</th>
+                            <th>@Html.DisplayNameFor(model => model.InsuranceCompanyName)</th>
+                            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.ExpireDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.Discount)</th>
+                            <th style="width: 150px;" class="text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="font-weight-bold text-primary">@Html.DisplayFor(modelItem => item.InsuranceNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CustomerFullName)</td>
+                                <td>
+                                    <span class="badge badge-info">@Html.DisplayFor(modelItem => item.InsuranceCompanyName)</span>
+                                </td>
+                                <td>@item.StartDate</td>
+                                <td>
+                                    <span class="text-success">@item.ExpireDate</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">@Html.DisplayFor(modelItem => item.Discount)%</span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning" title="ویرایش">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" title="جزئیات">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" title="حذف">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info m-3">
+                    <i class="fa fa-info-circle ml-1"></i>
+                    هیچ بیمه‌شده‌ای در سیستم ثبت نشده است.
+                </div>
+            }
+        </div>
+    </div>
+</div>

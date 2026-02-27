@@ -97,21 +97,12 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
-        <script>
-            $(document).ready(function () {
-                // فعال‌سازی تقویم روی تمام اینپوت‌هایی که کلاس pdate دارند
-                $('.pdate').persianDatepicker({
-                    format: 'YYYY/MM/DD',      // فرمت ذخیره‌سازی
-                    initialValue: false,       // مقدار پیش‌فرض نذاره (مگر اینکه ولیو داشته باشه)
-                    autoClose: true,           // بعد از انتخاب تاریخ بسته بشه
-                    calendar: {
-                        persian: {
-                            locale: 'fa'
-                        }
-                    }
-                });
-            });
-        </script>
     }
+    <script>
+        $(document).ready(function () {
+            if (typeof initPersianDatepicker === 'function') {
+                initPersianDatepicker('.pdate');
+            }
+        });
+    </script>
 }

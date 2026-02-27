@@ -1,0 +1,73 @@
+@model WA_Pharmacy.DTOs.Insured.InsuredListDto
+
+@{
+    ViewData["Title"] = "حذف بیمه‌شده";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-trash ml-1"></i> حذف بیمه‌شده
+                </h3>
+            </div>
+            
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <h5><i class="icon fa fa-warning"></i> هشدار!</h5>
+                    آیا از حذف کردن این رکورد بیمه‌شده اطمینان دارید؟ این عمل غیرقابل بازگشت است.
+                </div>
+
+                <dl class="row mt-4">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.InsuranceNumber)
+                    </dt>
+                    <dd class="col-sm-8 font-weight-bold text-danger">
+                        @Html.DisplayFor(model => model.InsuranceNumber)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CustomerFullName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CustomerFullName)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.InsuranceCompanyName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span class="badge badge-info">@Html.DisplayFor(model => model.InsuranceCompanyName)</span>
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.StartDate)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ExpireDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span class="text-success">@Html.DisplayFor(model => model.ExpireDate)</span>
+                    </dd>
+                </dl>
+            </div>
+            
+            <div class="card-footer bg-light text-left">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash ml-1"></i> بله، حذف کن
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fa fa-arrow-right ml-1"></i> انصراف و بازگشت
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

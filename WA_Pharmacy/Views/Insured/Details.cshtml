@@ -1,0 +1,72 @@
+@model WA_Pharmacy.DTOs.Insured.InsuredListDto
+
+@{
+    ViewData["Title"] = "جزئیات بیمه‌شده";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-eye ml-1"></i> جزئیات بیمه‌شده
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.InsuranceNumber)
+                    </dt>
+                    <dd class="col-sm-8 font-weight-bold text-primary">
+                        @Html.DisplayFor(model => model.InsuranceNumber)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CustomerFullName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CustomerFullName)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.InsuranceCompanyName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span class="badge badge-info">@Html.DisplayFor(model => model.InsuranceCompanyName)</span>
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.StartDate)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ExpireDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span class="text-success">@Html.DisplayFor(model => model.ExpireDate)</span>
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Discount)
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span class="badge badge-success">@Html.DisplayFor(model => model.Discount)%</span>
+                    </dd>
+                </dl>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer bg-light text-left">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="fa fa-edit ml-1"></i> ویرایش
+                </a>
+                <a asp-action="Index" class="btn btn-secondary mr-2">
+                    <i class="fa fa-list ml-1"></i> بازگشت به لیست
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

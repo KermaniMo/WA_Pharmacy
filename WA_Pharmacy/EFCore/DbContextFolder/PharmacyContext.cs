@@ -18,7 +18,7 @@ namespace WA_Pharmacy.EFCore.DbContextFolder
         public DbSet<Insured> Insureds { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
-        public DbSet<PrescriptionDetail> MedicineLists { get; set; }
+        public DbSet<PrescriptionDetail> PrescriptionDetails { get; set; }
         public DbSet<SalesHeader> SalesHeaders { get; set; }
         public DbSet<SalesDetails> SalesDetails { get; set; }
 

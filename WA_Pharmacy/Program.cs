@@ -38,6 +38,9 @@ builder.Services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MedicineProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<InsuranceProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<DoctorProfile>());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<PrescriptionProfile>());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<InsuredProfile>());
+
 //-------------------------------------------------
 
 
@@ -49,6 +52,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericReposito
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IMedicineService, MedicineService>();
 builder.Services.AddScoped<IInsuranceService, InsuranceService>();
+builder.Services.AddScoped<IInsuredService, InsuredService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, WA_Pharmacy.Services.EmailSender>();

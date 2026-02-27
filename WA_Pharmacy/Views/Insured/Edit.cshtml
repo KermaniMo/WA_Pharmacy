@@ -1,0 +1,108 @@
+@model WA_Pharmacy.DTOs.Insured.InsuredEditDto
+
+@{
+    ViewData["Title"] = "ویرایش اطلاعات بیمه‌شده";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card card-warning card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa fa-edit ml-1"></i> ویرایش بیمه‌شده
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="form-group row">
+                        <label asp-for="CustomerId" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <select asp-for="CustomerId" class="form-control select2" asp-items="ViewBag.CustomerId">
+                                <option value="">-- انتخاب مشتری --</option>
+                            </select>
+                            <span asp-validation-for="CustomerId" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="InsuranceId" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <select asp-for="InsuranceId" class="form-control select2" asp-items="ViewBag.InsuranceId">
+                                <option value="">-- انتخاب شرکت بیمه --</option>
+                            </select>
+                            <span asp-validation-for="InsuranceId" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="InsuranceNumber" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <input asp-for="InsuranceNumber" class="form-control" placeholder="شماره بیمه (۸ رقم) را وارد کنید" />
+                            <span asp-validation-for="InsuranceNumber" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="StartDate" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <!-- Format date for standard html text input handled by persian picker -->
+                            <input asp-for="StartDate" type="text" class="form-control pdate" autocomplete="off" placeholder="انتخاب تاریخ" />
+                            <span asp-validation-for="StartDate" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="ExpireDate" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <!-- Format date for standard html text input handled by persian picker -->
+                            <input asp-for="ExpireDate" type="text" class="form-control pdate" autocomplete="off" placeholder="انتخاب تاریخ" />
+                            <span asp-validation-for="ExpireDate" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label asp-for="Discount" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input asp-for="Discount" type="number" step="0.01" class="form-control" placeholder="درصد تخفیف" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Discount" class="text-danger mt-1 d-block"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer bg-light text-left">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fa fa-save ml-1"></i> ذخيره تغييرات
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fa fa-times ml-1"></i> انصراف
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            if (typeof initPersianDatepicker === 'function') {
+                initPersianDatepicker('.pdate');
+            }
+        });
+    </script>
+}

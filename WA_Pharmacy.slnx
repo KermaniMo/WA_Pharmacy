@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="WA_Pharmacy.Tests/WA_Pharmacy.Tests.csproj" />
   <Project Path="WA_Pharmacy/WA_Pharmacy.csproj" />
 </Solution>
